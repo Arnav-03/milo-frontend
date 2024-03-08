@@ -1,6 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import React from 'react';
-import { io, Socket } from 'socket.io-client';
+import { Socket, io } from 'socket.io-client';
 import Video from "./Components/index"
 import { WebRTCUser } from "./types";
 
@@ -19,7 +18,7 @@ const pc_config = {
 const SOCKET_SERVER_URL = "http://localhost:8000";
 
 const App = () => {
-  const socketRef = useRef<SocketIOClient.Socket>();
+  const socketRef = useRef<Socket | null>(null);
   const localStreamRef = useRef<MediaStream>();
   const sendPCRef = useRef<RTCPeerConnection>();
   const receivePCsRef = useRef<{ [socketId: string]: RTCPeerConnection }>({});
@@ -190,7 +189,8 @@ const App = () => {
   }, [createSenderOffer, createSenderPeerConnection]);
 
   useEffect(() => {
-    socketRef.current = io.connect(SOCKET_SERVER_URL);
+    socketRef.current = io(SOCKET_SERVER_URL);
+
     getLocalStream();
 
     socketRef.current.on("userEnter", (data: { id: string }) => {
