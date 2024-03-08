@@ -15,7 +15,7 @@ const pc_config = {
     },
   ],
 };
-const SOCKET_SERVER_URL = "http://localhost:8000";
+const SOCKET_SERVER_URL = "https://milo-backend-2.onrender.com/";
 
 const App = () => {
   const socketRef = useRef<Socket | null>(null);
